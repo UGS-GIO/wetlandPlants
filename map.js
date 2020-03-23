@@ -289,7 +289,7 @@ require([
         outFields: ["*"],
         //outFields: ["watershed", "wetlandtype"],
         popupTemplate: {
-            title: "Plant Sites",
+            title: "Wetland Survey Site",
             actions: [speciesAction, projectAction],
             content: [
 
