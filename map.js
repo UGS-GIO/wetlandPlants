@@ -1013,11 +1013,13 @@ console.log("go on and create grid");
             if (data[i].surveydate) {
                 console.log("Found Survey Date");
                 for (var i = 0; i < data.length; i++) {
-                    var dateString = moment(data[i].surveydate).format('l');
+                    var dateString = moment(data[i].surveydate).format('YYYY-MM-DD');
                     data[i].surveydate = dateString;
+
                 }
             }
         }
+
 
         // set the datastore for the grid using the
         // attributes we got for the query results
