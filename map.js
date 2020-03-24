@@ -19,6 +19,7 @@ require([
     "esri/widgets/Compass",
     "esri/widgets/Search",
     "esri/widgets/Legend",
+    "esri/widgets/Expand",
     "esri/widgets/LayerList",
     "esri/widgets/BasemapToggle",
     "esri/core/watchUtils",
@@ -57,7 +58,7 @@ require([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, SketchViewModel, Graphic, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Legend, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, SketchViewModel, Graphic, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Legend, Expand, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
 
     /******************************************************************
      *
@@ -315,6 +316,7 @@ require([
         url: "https://gis.trustlands.utah.gov/server/rest/services/Ownership/UT_SITLA_Ownership_LandOwnership_WM/MapServer",
         visible: false,
         title: "Land Ownership",
+        opacity: 0.5,
         popupTemplate: {
                     title: "Land Ownership",
                     content: "{STAE_LGD:contentOwnership}"
@@ -434,6 +436,24 @@ require([
           }
         }
       });
+
+                  //legend expand widget
+                  var expandLegend = new Expand({
+                    view: mapView,
+                    content: layerList,
+                    //group: "top-left",
+                    expandTooltip: "Expand Legend",
+                    expanded: false
+                  })
+    
+            //legend expand widget
+            var legend = new Expand({
+                view: mapView,
+                content: layerList,
+                //group: "top-left",
+                expandTooltip: "Expand Legend",
+                expanded: true
+              })
 
 
       plantSites
@@ -944,10 +964,12 @@ require([
 
         gridDis.style.display = 'block';
         domClass.add("mapViewDiv");
-            if (sitesCount > 0) {
+        console.log("counting");
+            if (sitesCount == 0) {
                 console.log("We have" + sitesCount + "sites");
-                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " species at " + sitesCount + " sites</b>"
+                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " species</b>"
             } else {
+                console.log("sites");
                 document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " sites</b>"
             }
             document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
@@ -2614,6 +2636,46 @@ $(function () {
         isResizing = false;
     });
 });
+
+
+// check for mobile to expand legend
+
+isResponsiveSize = mapView.widthBreakpoint === "xsmall";
+updateView(isResponsiveSize);
+
+// Breakpoints
+
+mapView.watch("widthBreakpoint", function(breakpoint) {
+    console.log("watching breakpoint");
+    console.log(breakpoint);
+  switch (breakpoint) {
+    case "xsmall":
+      updateView(true);
+      break;
+    case "small":
+    case "medium":
+    case "large":
+    case "xlarge":
+      updateView(false);
+      break;
+    default:
+  }
+});
+
+function updateView(isMobile) {
+    console.log("Is Mobile");
+  setLegendMobile(isMobile);
+}
+
+
+function setLegendMobile(isMobile) {
+  var toAdd = isMobile ? expandLegend : legend;
+  var toRemove = isMobile ? legend : expandLegend;
+
+  mapView.ui.remove(toRemove);
+  mapView.ui.add(toAdd, "top-left");
+}
+
 
 
 
