@@ -41,6 +41,8 @@ require([
     "dstore/legacy/StoreAdapter",
     "dgrid/List",
     "dojo/_base/declare",
+    "dojo/parser",
+    "dojo/aspect",
     "dojo/request",
     "dojo/mouse",
 
@@ -55,7 +57,7 @@ require([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, SketchViewModel, Graphic, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Legend, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, SketchViewModel, Graphic, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Legend, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
 
     /******************************************************************
      *
@@ -2571,6 +2573,49 @@ counts = count(summaryArray, function (item){
     function errorCallback(error) {
         console.log("error:", error);
       }
+
+//testing resizing grid
+
+var isResizing = false,
+    lastDownX = 0;
+
+$(function () {
+    var container = $('#cont');
+    var top = $('mapViewDiv');
+    var bottom = $('#gridDisplay');
+    //var gridHeight = $('dgrid');
+    var handle = $('#drag');
+
+    handle.on('mousedown', function (e) {
+        isResizing = true;
+        lastDownX = e.clientY;
+    });
+
+    $(document).on('mousemove', function (e) {
+        // we don't want to do anything if we aren't resizing.
+        if (!isResizing) 
+            return;
+        console.log("e.clientY ", e.clientY, container.offset().top)
+        var offsetRight = container.height() - (e.clientY - container.offset().top);
+        console.log(offsetRight);
+
+        top.css('bottom', offsetRight);
+        bottom.css('height', offsetRight);
+        //gridHeight.css('height', offsetRight);
+
+        let root = document.documentElement;
+
+        root.addEventListener("mousemove", e => {
+            root.style.setProperty('--gridHeight', offsetRight + "px");
+        })
+
+    }).on('mouseup', function (e) {
+        // stop resizing
+        isResizing = false;
+    });
+});
+
+
 
 
 });

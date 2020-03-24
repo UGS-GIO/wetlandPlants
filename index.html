@@ -86,8 +86,10 @@ a:active {
   }
 
   .dgrid {
-      height: 250px;
+      height: var(--gridHeight, 250px);
   }
+
+
 
   /* .calcite-panels .panel-body {
       overflow-x: visible;
@@ -97,6 +99,17 @@ a:active {
   #mapViewDiv.withGrid {
       height: 65%;
     }  
+
+
+
+#drag {
+    position: absolute;
+    left: 0;
+    top: -4px;
+    right: 0;
+    height: 8px;
+    cursor: n-resize;
+}
 
     #gridDisplay {
       position: absolute;
@@ -208,10 +221,12 @@ a:active {
 
   <!-- Map  -->
 
-  <div class="calcite-map calcite-map-absolute">
+  <div class="calcite-map calcite-map-absolute" id="cont">
     <div id="mapViewDiv">  
+    
 
         <div id="gridDisplay">
+          <div id="drag"></div>
             <span class="info" id="featureCount"></span>
             <div id="downloadX"></div>
             <!-- <span class="downloadX" id ="downloadCSV"></span> -->
@@ -226,6 +241,7 @@ a:active {
       >
         <span class="esri-icon-checkbox-unchecked"></span>
       </div>
+    
   </div>
 
 
