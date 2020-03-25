@@ -632,6 +632,15 @@ require([
         console.log(fields);
         console.log(gridFields);
 
+        //format innerHTML for a url value
+        function testRenderCell(object, value, node, options){
+            console.log(value);
+            var div = document.createElement("div");
+            div.className = "renderedCell";
+            div.innerHTML = '<a href=' + value + ' target=_blank>Click Here</a>';
+            return div;
+        }
+
 
         var columns = fields.filter(function(field, i) {
             if (gridFields.indexOf(field.name) >= -1) {
@@ -639,7 +648,14 @@ require([
             }
         }).map(function(field) {
             //console.log(field);
-            if (field.name == "objectid") {
+            if (field.name == "reportlink") {
+                return {
+                    field: field.name,
+                    label: field.alias,
+                    renderCell: testRenderCell
+                }
+            } else if
+             (field.name == "objectid") {
                 console.log("HIDE COLUMN " + field.name);
                 return {
                     field: field.name,
@@ -1018,7 +1034,16 @@ console.log("go on and create grid");
 
                 }
             }
+            // if (data[i].reportlink) {
+            //     console.log("found report link");
+            //     for (var i = 0; i < data.length; i++) {
+            //         var url = data[i].reportlink;
+            //         data[i].reportlink = '<a href=>' + url + '</a>';
+            //     }
+            // }
         }
+
+
 
 
         // set the datastore for the grid using the
