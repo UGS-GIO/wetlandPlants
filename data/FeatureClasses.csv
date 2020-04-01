@@ -1,4 +1,4 @@
-Name,Type,HasZ,HasM,CoordinateSystem,FeatureDataset,EditorTracking,CatalogPath
+﻿Name,Type,HasZ,HasM,CoordinateSystem,FeatureDataset,EditorTracking,CatalogPath
 ,,,,,,,
 ugsgwp.sde.wetland_ecoregions,Polygon,Disabled,Disabled,USA_Contiguous_Albers_Equal_Area_Conic_USGS_version,-,Disabled,C:\Users\marthajensen\AppData\Roaming\ESRI\Desktop10.7\ArcCatalog\sde@ugsgwp.nrwugspgressp.sde\ugsgwp.sde.wetland_ecoregions
 objectid,OID,,,,,,
