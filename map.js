@@ -2583,6 +2583,8 @@ counts = count(summaryArray, function (item){
 
         document.getElementById("panelGlossary").className = "panel collapse in";
         document.getElementById("collapseGlossary").className = "panel-collapse collapse in";
+        document.getElementById("panelInfo").className = "panel collapse";
+        document.getElementById("collapseInfo").className = "panel-collapse collapse";
         return false;
     }
 
@@ -2592,6 +2594,8 @@ counts = count(summaryArray, function (item){
 
         document.getElementById("panelGlossary").className = "panel collapse in";
         document.getElementById("collapseGlossary").className = "panel-collapse collapse in";
+        document.getElementById("panelInfo").className = "panel collapse";
+        document.getElementById("collapseInfo").className = "panel-collapse collapse";
         return false;
     }
 
