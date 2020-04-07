@@ -1,4 +1,4 @@
-# wetlandPlants
+# wetlandPlants - UGS Plant Portal
 Web application that compiles a large data set of wetlands &amp; plant data and displays it on an interactive web map
 
 Project Manager: 
