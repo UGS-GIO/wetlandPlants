@@ -331,11 +331,11 @@ a:active {
             <div class="panel-body">
               <h4><strong>WETLAND CLASSIFICATION</strong></h4>
     
-              <p><span style="font-weight: 400;">Wetland classes are presented by </span><a href="https://www.epa.gov/eco-research/ecoregions" target="_blank"><span style="font-weight: 400;">ecoregion</span></a><span style="font-weight: 400;">, areas where ecosystems are generally similar based on patterns in geology, landforms, soils, vegetation, climate, land use, wildlife, and hydrology. Ecoregions are hierarchically arranged at four levels with 2 level I ecoregions, 3 level II ecoregions, 7 level III ecoregions, and 36 level IV ecoregions in Utah. Three level III ecoregions make up more than 95% of Utah, including the Central Basin and Range, the Wasatch and Uinta Mountains, and the Colorado Plateau. The majority of wetland survey data contributed to this application to date have been from the first two level III ecoregions, so wetland classes for now focus on those two ecoregions only. Within each ecoregion, wetland sites were further classified based on factors such as dominant overstory life form (herbaceous, shrub, tree), water regime, and landscape position. For the Wasatch and Uinta Mountains, we also use level IV ecoregions as a factor in the classification.</span></p>
+              <p><span style="font-weight: 400;">Wetland types are presented by </span><a href="https://www.epa.gov/eco-research/ecoregions" target="_blank"><span style="font-weight: 400;">ecoregion</span></a><span style="font-weight: 400;">, areas where ecosystems are generally similar based on patterns in geology, landforms, soils, vegetation, climate, land use, wildlife, and hydrology. Ecoregions are hierarchically arranged at four levels with 2 level I ecoregions, 3 level II ecoregions, 7 level III ecoregions, and 36 level IV ecoregions in Utah. Three level III ecoregions make up more than 95% of Utah, including the Central Basin and Range, the Wasatch and Uinta Mountains, and the Colorado Plateau. The majority of wetland survey data contributed to this application to date have been from the first two level III ecoregions, so wetland classes for now focus on those two ecoregions only. Within each ecoregion, wetland sites were further classified based on factors such as dominant overstory life form (herbaceous, shrub, tree), water regime, and landscape position. For the Wasatch and Uinta Mountains, we also use level IV ecoregions as a factor in the classification. Sites with substantial mixing of two wetland types are assigned both a primary and secondary wetland type.</span></p>
               <p>&nbsp;</p>
 <h4><strong>Central Basin and Range</strong></h4>
 
-<p>Data was used from 204 sites surveyed in the Central Basin and Range by the UGS between 2013 and 2018 to develop seven initial wetland classes that take into account dominant overstory life form, water regime, salinity tolerance, and landscape position. More information about the development of the Central Basin and Range classes can be found <a href="https://geodata.geology.utah.gov/pages/view.php?ref=63232" target="_blank">here</a>. It is anticipated that these wetland classes will be modified in 2020 at the conclusion of a two-year study of wetlands in the Central Basin and Range of Utah.</p>
+<p>Data were used from 204 sites surveyed in the Central Basin and Range by the UGS between 2013 and 2018 to develop seven initial wetland classes that take into account dominant overstory life form, water regime, salinity tolerance, and landscape position. More information about the development of the Central Basin and Range classes can be found <a href="https://geodata.geology.utah.gov/pages/view.php?ref=63232" target="_blank">here</a>. It is anticipated that these wetland classes will be modified in 2020 at the conclusion of a two-year study of wetlands in the Central Basin and Range of Utah.</p>
 <table border="1">
 <tbody>
 <tr>
@@ -367,7 +367,7 @@ a:active {
 <p>emergent marsh</p>
 </td>
 <td>
-<p>Wetland dominated by emergent forbs and graminoids and frequently inundated with water &ge;15 cm in depth, though water depths may vary throughout the year.</p>
+<p>Wetland dominated by emergent forbs and graminoids and frequently inundated with water &ge;15 cm in depth, and typically saturated when not inundated, though water depths may vary throughout the year depending on climate conditions and management.</p>
 </td>
 </tr>
 <tr>
@@ -391,7 +391,7 @@ a:active {
 <p>woody wetland</p>
 </td>
 <td>
-<p>Wetland dominated by woody species, typically with &ge;20% woody species cover.</p>
+<p>Wetland dominated by woody species, typically with &ge;20% woody species cover, and frequently found along streams and rivers.</p>
 </td>
 </tr>
 <tr>
@@ -518,8 +518,8 @@ a:active {
 </tbody>
 </table>
 <h4><strong>VEGETATION CONDITION</strong></h4>
-<p>Sites were assigned vegetation condition classes based solely on plant community composition data. &ldquo;Reference&rdquo; sites are sites with the most intact plant communities for a particular wetland class, regardless of the degree of landscape disturbance adjacent to these sites or whether other stressors are present. Two metrics were used, relative native cover and mean C, to classify sites. Relative native cover is the percent of all plant cover that is composed of native species. Mean C is a metric that relies on coefficient of conservatism values (C-values). C-values between 1 and 10 are assigned to species based on their association with disturbance through a combination of best professional judgment, literature review, and/or field observations. Low values indicate that species are usually found at disturbed sites, high values indicate that species are associated with pristine sites, and values in the middle indicate that species may be found equally at either type of site. All non-native species are assigned a C-value of 0. Mean C is calculated by taking the average C-value for all species at a site.&nbsp;</p>
-<p>&ldquo;Reference&rdquo; sites are those sites with a mean C value within the top 25% of sites for the wetland class and with &ge;80% relative native cover. Sites where &lt;75% of the species were assigned C-values were classified as &ldquo;not enough data&rdquo; as well as sites having high mean C values but &lt;75% of the species by cover with known nativity. We did not classify any sites as reference for wetland classes having &lt;10 sites; these sites were all classified as &ldquo;not enough data.&rdquo;</p>
+<p>Sites were assigned vegetation condition classes based solely on plant community composition data. &ldquo;Reference&rdquo; sites are sites with the most intact plant communities for a particular wetland class, regardless of the degree of landscape disturbance adjacent to these sites or whether other stressors are present. Cover-weighted mean C was used to assign sites to vegetation condition classes. Cover-weighted mean C is a metric that relies on coefficient of conservatism values (C-values). C-values between 1 and 10 are assigned to species based on their association with disturbance through a combination of best professional judgment, literature review, and/or field observations. Low values indicate that species are usually found at disturbed sites, high values indicate that species are associated with pristine sites, and values in the middle indicate that species may be found equally at either type of site. All non-native species are assigned a C-value of 0. Cover-weighted mean C is calculated by taking an average C-value for all species at a site, weighted by the cover of each species.</p>
+<p>&ldquo;Reference&rdquo; sites are those sites with a cover-weighted mean C value within the top 25% of sites for the wetland class, using all data available in May 2020. Sites where &lt;75% of the species cover were assigned C-values were classified as &ldquo;not enough data.&rdquo; We did not classify any sites as reference for aquatic bed wetlands, sites with no vegetation, or wetland classes having &lt;10 sites; these sites were all classified as “not enough data.” Sites with two wetland types were considered reference if they met or exceeded the cover-weighted mean C thresholds for both types.</p>
             </div>
          </div>
         </div>
