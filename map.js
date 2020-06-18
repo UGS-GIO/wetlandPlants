@@ -132,11 +132,17 @@ require([
             if (feature.graphic.attributes.ecoregionalgroup) {
                 content += "<span class='bold' title='Ecological System'><b>Ecoregional Group: </b></span>{ecoregionalgroup}<br/>";
             }
+            if (feature.graphic.attributes.owner) {
+                content += "<span class='bold' title='Ecological System'><b>Land Owner: </b></span>{owner}<br/>";
+            }
             if (feature.graphic.attributes.wetlandtype) {
-                content += "<span class='bold' title='Wetland Type'><b>Wetland Type: </b></span>{wetlandtype}<br/>";
+                content += "<span class='bold' title='Wetland Type'><b>Primary Wetland Type: </b></span>{wetlandtype}<br/>";
+            }
+            if (feature.graphic.attributes.wetlandtype2) {
+                content += "<span class='bold' title='Wetland Type'><b>Secondary Wetland Type: </b></span>{wetlandtype2}<br/>";
             }
             if (feature.graphic.attributes.projectwetlandclass) {
-                content += "<span class='bold' title='Wetland Type'><b>Project Wetland Class: </b></span>{projectwetlandclass}<br/>";
+                content += "<span class='bold' title='Wetland Type'><b>HGM Class: </b></span>{projectwetlandclass}<br/>";
             }
             if (feature.graphic.attributes.vegetationcondition) {
                 content += "<span class='bold' title='Vegetation Condition'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/>";
@@ -144,11 +150,11 @@ require([
             if (feature.graphic.attributes.privacystatus) {
                 content += "<span class='bold' title='Condition Method'><b>Privacy Status: </b></span>{privacystatus}<br/>";
             }
-            if (feature.graphic.attributes.meanc) {
-                content += "<span class='bold' title='Site Code'><b>Mean C: </b></span>{meanc}<br/>";
+            if (feature.graphic.attributes.cwmeanc) {
+                content += "<span class='bold' title='Site Code'><b>CW Mean C: </b></span>{cwmeanc}<br/>";
             }
-            if (feature.graphic.attributes.relativenativecover) {
-                content += "<span class='bold' title='Site Code'><b>Relative Native Cover: </b></span>{relativenativecover}<br/>";
+            if (feature.graphic.attributes.relnativecover) {
+                content += "<span class='bold' title='Site Code'><b>Relative Native Cover: </b></span>{relnativecover}<br/>";
             }
         return content;
     }
@@ -244,7 +250,7 @@ require([
     };
 
     let ecoRegions = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV5_View/FeatureServer/2",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV6_View/FeatureServer/2",
         title: "EcoRegional Groups",
         visible: false,
         outFields: ["*"],
@@ -282,7 +288,7 @@ require([
     });
 
     var plantSites = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV6_View/FeatureServer/0",
         title: "Wetland Survey Sites",
         visible: true,
         outFields: ["*"],
@@ -294,7 +300,7 @@ require([
 
                     {
                     type: "text",
-                    text: "<b>Project: </b>{project}<br><b>Site Code: </b>{sitecode}<br><b>Survey Date: </b>{surveydate}<br><b>Watershed: </b>{watershed}<br><b>Ecoregional Group: </b>{ecoregionalgroup}<br><b>Wetland Type: </b>{wetlandtype}<br><b>Project Wetland Class: </b>{projectwetlandclass}<br><b>Vegetation Condition: </b>{vegetationcondition}<br><b>Privacy Status: </b>{privacystatus}<br><b>Mean C: </b>{meanc}<br><b>Relative Native Cover: </b>{relativenativecover}<br>"
+                    text: "<b>Project: </b>{project}<br><b>Site Code: </b>{sitecode}<br><b>Survey Date: </b>{surveydate}<br><b>Watershed: </b>{watershed}<br><b>Ecoregional Group: </b>{ecoregionalgroup}<br><b>Primary Wetland Type: </b>{wetlandtype}<br><b>Secondary Wetland Type: </b>{wetlandtype2}<br><b>HGM Class: </b>{projectwetlandclass}<br><b>Vegetation Condition: </b>{vegetationcondition}<br><b>Privacy Status: </b>{privacystatus}<br><b>CW Mean C: </b>{cwmeanc}<br><b>Relatice Native Cover: </b>{relnativecover}<br>"
                 },
                 {
                     type: "attachments"
@@ -329,8 +335,9 @@ require([
 
 
     var sitesSpeciesJoin = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/sitesSpeciesJoinV5/FeatureServer",
-        //url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/siteSpeciesJoin/FeatureServer",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV6_View/FeatureServer/5",
+        //url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/sitesSpeciesJoinV5/FeatureServer",
+        
         // title: "Plant Sites",
         outFields: ["*"],
         // outFields: ["watershed", "wetlandtype"],
@@ -479,14 +486,14 @@ require([
         var query = {
             geometry: geometry,
             outFields: ["*"]
-            //outFields: ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"]
+            //outFields: ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relnativecover"]
         };
 
         // query graphics from the csv layer view. Geometry set for the query
         // can be polygon for point features and only intersecting geometries are returned
         plantLayerView.queryFeatures(query)
             .then(function(results) {
-                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
+                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
                 theGridFields = [
  
                     {
@@ -494,28 +501,36 @@ require([
                         name: 'project'
                     },
                     {
-                        alias: 'Watershed',
-                        name: 'watershed'
-                    },
-                    {
                         alias: 'Site Code',
                         name: 'sitecode'
-                    },
-                    {
-                        alias: 'Ecoregional Group',
-                        name: 'ecoregionalgroup'
                     },
                     {
                         alias: 'Survey Date',
                         name: 'surveydate'
                     },
                     {
-                        alias: 'Project Wetland Class',
-                        name: 'projectwetlandclass'
+                        alias: 'Watershed',
+                        name: 'watershed'
                     },
                     {
-                        alias: 'Wetland Type',
+                        alias: 'Ecoregional Group',
+                        name: 'ecoregionalgroup'
+                    },
+                    {
+                        alias: 'Land Owner',
+                        name: 'owner'
+                    },
+                    {
+                        alias: 'Primary Wetland Type',
                         name: 'wetlandtype'
+                    },
+                    {
+                        alias: 'Secondary Wetland Type',
+                        name: 'wetlandtype2'
+                    },
+                    {
+                        alias: 'Project Wetland Class',
+                        name: 'projectwetlandclass'
                     },
                     {
                         alias: 'Vegetation Condition',
@@ -526,12 +541,12 @@ require([
                         name: 'privacystatus'
                     },
                     {
-                        alias: 'Mean C',
-                        name: 'meanc'
+                        alias: 'CW Mean C',
+                        name: 'cwmeanc'
                     },
                     {
                         alias: 'Relative Native Cover',
-                        name: 'relativenativecover'
+                        name: 'relnativecover'
                     },
                 ];
                 results.fields = theGridFields;
@@ -721,11 +736,11 @@ require([
                 console.info("hover");
                 evt.target.title = "Duration, as “annual”, “biennial”, “perennial”, or a combination thereof.";
             });
-            grid.on("th.field-indicatorWmvc:mouseover", function(evt) {
+            grid.on("th.field-indicatorwmvc:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Wetland indicator value for Western Mountains, Valleys, or Coasts";
             });
-            grid.on("th.field-indicatorAridWestc:mouseover", function(evt) {
+            grid.on("th.field-indicatoraridwestc:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Wetland indicator value for Arid West";
             });
@@ -769,7 +784,7 @@ require([
             });
             grid.on("th.field-projectwetlandclass:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Wetland type assigned by project using project-specific conventions";
+                evt.target.title = "Wetland hydrogeomorphic class, for projects where it was assigned";
             });
             grid.on("th.field-wetlandtype:mouseover", function(evt) {
                 console.info("hover");
@@ -783,14 +798,31 @@ require([
                 console.info("hover");
                 evt.target.title = "Privacy status, as “confidential” or “public.”";
             });
-            grid.on("th.field-meanc:mouseover", function(evt) {
+            grid.on("th.field-cwmeanc:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Average C value of all species at site";
+                evt.target.title = "Average C value of all species at site, weighted by cover";
             });
-            grid.on("th.field-relativenativecover:mouseover", function(evt) {
+            grid.on("th.field-relnativecover:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Percent of total cover composed of native species";
             });
+            grid.on("th.field-owner:mouseover", function(evt) {
+                console.info("hover");
+                evt.target.title = "Entity that owns parcel where site is located, as of early 2020.";
+            });
+            grid.on("th.field-wetlandtype:mouseover", function(evt) {
+                console.info("hover");
+                evt.target.title = "Primary, or dominant, wetland type as assigned by UGS";
+            });
+            grid.on("th.field-wetlandtype2:mouseover", function(evt) {
+                console.info("hover");
+                evt.target.title = "Secondary wetland type as assigned by UGS for mixed type sites";
+            });
+            grid.on("th.field-projectwetlandclass:mouseover", function(evt) {
+                console.info("hover");
+                evt.target.title = "Wetland hydrogeomorphic class, for projects where it was assigned";
+            });
+           
 
         }
     }
@@ -869,7 +901,7 @@ require([
 
 
     var hucLayer = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/1",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/1",
         title: "Watershed (HUC8) Boundaries",
         visible: true,
         popupTemplate: {
@@ -1119,7 +1151,7 @@ console.log(downloadArray);
             idArray.push(att);
         });
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/0"
         });
 
         var speciesRelateQuery = new RelationshipQuery({
@@ -1199,7 +1231,7 @@ console.log(downloadArray);
         
 
         var queryEco = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/0"
         });
 
 
@@ -1454,7 +1486,7 @@ console.log(downloadArray);
         console.log(speciescommonname);
 
         var speciesQueryTask = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/3",
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/3",
         });
 
         //Query the related table for names that match commonname field with the user selected option in the DOM
@@ -1513,10 +1545,11 @@ console.log(downloadArray);
 
 
                 var query = plantSites.createQuery();
-                gridFields = ["project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
+                console.log(query);
+                gridFields = ["project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
                 //gridFields = ["objectid", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
                 query.where = defExp;
-                query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
+                query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
                 //query.outFields = ["objectid", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
 
                 plantSites.queryFeatures(query).then(function(e) {
@@ -1560,8 +1593,16 @@ console.log(downloadArray);
                             name: 'ecoregionalgroup'
                         },
                         {
-                            alias: 'Wetland Type',
+                            alias: 'Land Owner',
+                            name: 'owner'
+                        },
+                        {
+                            alias: 'Primary Wetland Type',
                             name: 'wetlandtype'
+                        },
+                        {
+                            alias: 'Secondary Wetland Type',
+                            name: 'wetlandtype2'
                         },
                         {
                             alias: 'Project Wetland Class',
@@ -1576,12 +1617,12 @@ console.log(downloadArray);
                             name: 'privacystatus'
                         },
                         {
-                            alias: 'Mean C',
-                            name: 'meanc'
+                            alias: 'CW Mean C',
+                            name: 'cwmeanc'
                         },
                         {
                             alias: 'Relative Native Cover',
-                            name: 'relativenativecover'
+                            name: 'relnativecover'
                         },
                     ];
         
@@ -1606,7 +1647,7 @@ console.log(downloadArray);
         console.log("doQuery");
         doGridClear();
 
-        gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
+        gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
 
 
 
@@ -1695,9 +1736,11 @@ console.log(downloadArray);
             console.log(response);
             mapView.goTo(response.extent);
           });
+          
 
         //add feature count and add x to upper right corner of table to close it
         plantSites.queryFeatureCount().then(function(count) {
+            console.log(count);
             document.getElementById("featureCount").innerHTML =
                 "<b>Showing attributes for " +
                 count + " features </b>"
@@ -1707,8 +1750,8 @@ console.log(downloadArray);
         });
 
         var query = plantSites.createQuery();
-        query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relativenativecover"];
-
+        query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+        console.log("poop");
         plantSites.queryFeatures(query).then(function(e) {
             console.log(e);
 
@@ -1749,8 +1792,16 @@ console.log(downloadArray);
                     name: 'ecoregionalgroup'
                 },
                 {
-                    alias: 'Wetland Type',
+                    alias: 'Land Owner',
+                    name: 'owner'
+                },
+                {
+                    alias: 'Primary Wetland Type',
                     name: 'wetlandtype'
+                },
+                {
+                    alias: 'Secondary Wetland Type',
+                    name: 'wetlandtype2'
                 },
                 {
                     alias: 'Project Wetland Class',
@@ -1765,12 +1816,12 @@ console.log(downloadArray);
                     name: 'privacystatus'
                 },
                 {
-                    alias: 'Mean C',
-                    name: 'meanc'
+                    alias: 'CW Mean C',
+                    name: 'cwmeanc'
                 },
                 {
                     alias: 'Relative Native Cover',
-                    name: 'relativenativecover'
+                    name: 'relnativecover'
                 },
             ];
 
@@ -1925,7 +1976,7 @@ console.log(downloadArray);
         console.log("doSpeciesSummary");
         doSpeciesSummaryClear();
 
-        gridFields = ["family", "scientificname", "commonname", "sitecount", "meancover", "nativity", "noxious", "growthform", "duration", "indicatorWmvc", "indicatorAridWest", "cvalue"];
+        gridFields = ["family", "scientificname", "commonname", "sitecount", "meancover", "nativity", "noxious", "growthform", "duration", "indicatorwmvc", "indicatoraridwest", "cvalue"];
 
         var queryParams = "";
 
@@ -2030,7 +2081,7 @@ console.log(downloadArray);
         var query = sitesSpeciesJoin.createQuery();
         query.where = plantSites.definitionExpression;
         //query.outFields = ["*"];
-        query.outFields = ["family", "scientificname", "commonname", "sitecount", "meancover", "nativity", "noxious", "growthform", "duration", "indicatorWmvc", "indicatorAridWest", "cvalue"];
+        query.outFields = ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "duration", "indicatorwmvc", "indicatoraridwest", "cvalue"];
 
         sitesSpeciesJoin.queryFeatures(query).then(function(e) {
             console.log(e);
@@ -2164,7 +2215,7 @@ counts = count(summaryArray, function (item){
 
             var uniqueArray = removeDuplicates(summaryArray, "scientificname");
 
-            var noCoverArray = uniqueArray.map(obj => ({family: obj.family, scientificname: obj.scientificname, commonname: obj.commonname, sitecount: obj.sitecount, meancover: obj.meancover, nativity: obj.nativity, noxious: obj.noxious, growthform: obj.growthform, duration: obj.duration, indicatorWmvc: obj.indicatorWmvc, indicatorAridWest: obj.indicatorAridWest, cvalue: obj.cvalue}))
+            var noCoverArray = uniqueArray.map(obj => ({family: obj.family, scientificname: obj.scientificname, commonname: obj.commonname, sitecount: obj.sitecount, meancover: obj.meancover, nativity: obj.nativity, noxious: obj.noxious, growthform: obj.growthform, duration: obj.duration, indicatorwmvc: obj.indicatorwmvc, indicatoraridwest: obj.indicatoraridwest, cvalue: obj.cvalue}))
 
              
             console.log(noCoverArray)
@@ -2209,11 +2260,11 @@ counts = count(summaryArray, function (item){
                 },
                 {
                     alias: 'Mountains Wetland Indicator',
-                    name: 'indicatorWmvc'
+                    name: 'indicatorwmvc'
                 },
                 {
                     alias: 'Arid West Indicator',
-                    name: 'indicatorAridWest'
+                    name: 'indicatoraridwest'
                 },
                 {
                     alias: 'C-Value',
@@ -2260,7 +2311,7 @@ counts = count(summaryArray, function (item){
         ];
 
         var queryProjects = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/0"
         });
 
         relationQueryProjects = new RelationshipQuery({
@@ -2338,15 +2389,15 @@ counts = count(summaryArray, function (item){
         mapView.graphics.removeAll()
         //mapView.popup.close();
         console.log("doQuerySpecies");
-        gridFields = ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "duration", "indicatorWmvc", "indicatorAridWest", "cvalue"];
+        gridFields = ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "duration", "indicatorwmvc", "indicatoraridwest", "cvalue"];
 
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/0"
         });
 
         relationQuerySpecies = new RelationshipQuery({
             objectIds: [objectid],
-            outFields: ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "duration", "indicatorWmvc", "indicatorAridWest", "cvalue"],
+            outFields: ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "duration", "indicatorwmvc", "indicatoraridwest", "cvalue"],
             relationshipId: 0
         });
 
@@ -2391,15 +2442,11 @@ counts = count(summaryArray, function (item){
                 },
                 {
                     alias: 'Mountains Wetland Indicator',
-                    name: 'indicatorWmvc'
+                    name: 'indicatorwmvc'
                 },
                 {
                     alias: 'Arid West Indicator',
-                    name: 'indicatorAridWest'
-                },
-                {
-                    alias: 'Wetland Indicator',
-                    name: 'wetlandindicator'
+                    name: 'indicatoraridwest'
                 },
                 {
                     alias: 'C-Value',
