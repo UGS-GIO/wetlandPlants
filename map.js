@@ -707,7 +707,7 @@ require([
             });
             grid.on("th.field-nativity:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Nativity in Utah";
+                evt.target.title = "Nativity in Utah, as “native”, “introduced”, or “both”";
             });
             grid.on("th.field-noxious:mouseover", function(evt) {
                 console.info("hover");
@@ -717,9 +717,17 @@ require([
                 console.info("hover");
                 evt.target.title = "Growth form";
             });
-            grid.on("th.field-wetlandindicator:mouseover", function(evt) {
+            grid.on("th.field-duration:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Wetland indicator value for Arid West or Western Mountains, Valleys, or Coasts (depending on site location)";
+                evt.target.title = "Duration, as “annual”, “biennial”, “perennial”, or a combination thereof.";
+            });
+            grid.on("th.field-indicatorWmvc:mouseover", function(evt) {
+                console.info("hover");
+                evt.target.title = "Wetland indicator value for Western Mountains, Valleys, or Coasts";
+            });
+            grid.on("th.field-indicatorAridWestc:mouseover", function(evt) {
+                console.info("hover");
+                evt.target.title = "Wetland indicator value for Arid West";
             });
             grid.on("th.field-cvalue:mouseover", function(evt) {
                 console.info("hover");
@@ -789,9 +797,6 @@ require([
 
 
     function selectFeatureFromGrid(event) {
-
-
-
         console.log(event);
         mapView.popup.close();
         mapView.graphics.removeAll();
@@ -799,13 +804,6 @@ require([
         console.log(row);
         var id = row.data.objectid;
         console.log(id);
-
-        // setup a query by specifying objectids
-        //   var query = {
-        //     objectids: [parseInt(id)],
-        //     outFields: ["*"],
-        //     returnGeometry: true
-        //   };
 
         var query = plantSites.createQuery();
 
@@ -819,10 +817,6 @@ require([
                 var graphics = results.features;
                 console.log(graphics);
                 var item = graphics[0];
-
-              //  //checks to see if site is confidential or not
-                //if (item.attributes.confidential != 1) {
-                //    console.log("public");
                     var cntr = [];
                     cntr.push(item.geometry.longitude);
                     cntr.push(item.geometry.latitude);
@@ -831,10 +825,8 @@ require([
                         center: cntr, // position:
                         zoom: 13
                     });
-
                     mapView.graphics.removeAll();
                     var selectedGraphic = new Graphic({
-
                         geometry: item.geometry,
                         symbol: new SimpleMarkerSymbol({
                             //color: [0,255,255],
@@ -846,56 +838,11 @@ require([
                             }
                         })
                     });
-
                     mapView.graphics.add(selectedGraphic);
-
                     mapView.popup.open({
                         features: [item],
                         location: item.geometry
                     });
-                //} else {
-                //     console.log("confidential");
-
-                //     //masking confidential sites geographically by adding to their lat long values with a randomly generated number between min and max variables
-                //     var min = .003;
-                //     var max = .05;
-                //     var random = Math.random() * (+max - +min) + +min;
-                //     maskedLat = item.geometry.latitude + random;
-                //     maskedLong = item.geometry.longitude - random;
-                //     var cntr = [];
-                //     cntr.push(maskedLong);
-                //     cntr.push(maskedLat);
-                //     item.geometry.latitude = maskedLat;
-                //     item.geometry.longitude = maskedLong;
-                //     console.log(cntr);
-
-                //     mapView.goTo({
-                //         center: cntr, // position:
-                //         zoom: 13
-                //     });
-
-                //     mapView.graphics.removeAll();
-                //     var selectedGraphic = new Graphic({
-
-                //         geometry: item.geometry,
-                //         // symbol: new SimpleMarkerSymbol({
-                //         //     //color: [0,255,255],
-                //         //     style: "circle",
-                //         //     //size: "8px",
-                //         //     outline: {
-                //         //         color: [255, 255, 0],
-                //         //         width: 3
-                //         //     }
-                //         // })
-                //     });
-
-                //     mapView.graphics.add(selectedGraphic);
-
-                //     mapView.popup.open({
-                //         features: [item],
-                //         location: cntr
-                //     });
-                // }
             })
     }
 
@@ -1978,7 +1925,7 @@ console.log(downloadArray);
         console.log("doSpeciesSummary");
         doSpeciesSummaryClear();
 
-        gridFields = ["family", "scientificname", "commonname", "sitecount", "meancover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
+        gridFields = ["family", "scientificname", "commonname", "sitecount", "meancover", "nativity", "noxious", "growthform", "duration", "indicatorWmvc", "indicatorAridWest", "cvalue"];
 
         var queryParams = "";
 
@@ -2083,7 +2030,7 @@ console.log(downloadArray);
         var query = sitesSpeciesJoin.createQuery();
         query.where = plantSites.definitionExpression;
         //query.outFields = ["*"];
-        query.outFields = ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
+        query.outFields = ["family", "scientificname", "commonname", "sitecount", "meancover", "nativity", "noxious", "growthform", "duration", "indicatorWmvc", "indicatorAridWest", "cvalue"];
 
         sitesSpeciesJoin.queryFeatures(query).then(function(e) {
             console.log(e);
@@ -2217,7 +2164,7 @@ counts = count(summaryArray, function (item){
 
             var uniqueArray = removeDuplicates(summaryArray, "scientificname");
 
-            var noCoverArray = uniqueArray.map(obj => ({family: obj.family, scientificname: obj.scientificname, commonname: obj.commonname, sitecount: obj.sitecount, meancover: obj.meancover, nativity: obj.nativity, noxious: obj.noxious, growthform: obj.growthform, wetlandindicator: obj.wetlandindicator, cvalue: obj.cvalue}))
+            var noCoverArray = uniqueArray.map(obj => ({family: obj.family, scientificname: obj.scientificname, commonname: obj.commonname, sitecount: obj.sitecount, meancover: obj.meancover, nativity: obj.nativity, noxious: obj.noxious, growthform: obj.growthform, duration: obj.duration, indicatorWmvc: obj.indicatorWmvc, indicatorAridWest: obj.indicatorAridWest, cvalue: obj.cvalue}))
 
              
             console.log(noCoverArray)
@@ -2257,8 +2204,16 @@ counts = count(summaryArray, function (item){
                     name: 'growthform'
                 },
                 {
-                    alias: 'Wetland Indicator',
-                    name: 'wetlandindicator'
+                    alias: 'Duration',
+                    name: 'duration'
+                },
+                {
+                    alias: 'Mountains Wetland Indicator',
+                    name: 'indicatorWmvc'
+                },
+                {
+                    alias: 'Arid West Indicator',
+                    name: 'indicatorAridWest'
                 },
                 {
                     alias: 'C-Value',
@@ -2300,7 +2255,7 @@ counts = count(summaryArray, function (item){
         //mapView.popup.close();
         console.log("doQueryProjects");
         //doClear();
-        gridFields = ["projectcode", "organization", "projectgoal", "methodname", "assessmentareadescription",
+        gridFields = ["projectcode", "organization", "contactinfo", "projectgoal", "methodname", "assessmentareadescription",
             "vegetationmethod", "vegetationcalculation", "reportlink"
         ];
 
@@ -2310,7 +2265,7 @@ counts = count(summaryArray, function (item){
 
         relationQueryProjects = new RelationshipQuery({
             objectIds: [objectid],
-            outFields: ["projectcode", "organization", "projectgoal", "methodname", "assessmentareadescription",
+            outFields: ["projectcode", "organization", "contactinfo", "projectgoal", "methodname", "assessmentareadescription",
             "vegetationmethod", "vegetationcalculation", "reportlink"],
             relationshipId: 1
         });
@@ -2329,6 +2284,10 @@ counts = count(summaryArray, function (item){
                 {
                     alias: 'Organization',
                     name: 'organization'
+                },
+                {
+                    alias: 'Contact Info',
+                    name: 'contactinfo'
                 },
                 {
                     alias: 'Project Goal',
@@ -2379,7 +2338,7 @@ counts = count(summaryArray, function (item){
         mapView.graphics.removeAll()
         //mapView.popup.close();
         console.log("doQuerySpecies");
-        gridFields = ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
+        gridFields = ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "duration", "indicatorWmvc", "indicatorAridWest", "cvalue"];
 
         var querySpecies = new QueryTask({
             url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV5_View/FeatureServer/0"
@@ -2387,7 +2346,7 @@ counts = count(summaryArray, function (item){
 
         relationQuerySpecies = new RelationshipQuery({
             objectIds: [objectid],
-            outFields: ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"],
+            outFields: ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "duration", "indicatorWmvc", "indicatorAridWest", "cvalue"],
             relationshipId: 0
         });
 
@@ -2425,6 +2384,18 @@ counts = count(summaryArray, function (item){
                 {
                     alias: 'Growth Form',
                     name: 'growthform'
+                },
+                {
+                    alias: 'Duration',
+                    name: 'duration'
+                },
+                {
+                    alias: 'Mountains Wetland Indicator',
+                    name: 'indicatorWmvc'
+                },
+                {
+                    alias: 'Arid West Indicator',
+                    name: 'indicatorAridWest'
                 },
                 {
                     alias: 'Wetland Indicator',
