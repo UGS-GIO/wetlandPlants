@@ -69,7 +69,7 @@ require([
     let type3 = "All";
     let type4 = "All";
 
-    sitesCount = 0;
+    let sitesCount;
 
     // create a new datastore for the on demandgrid
     // will be used to display attributes of selected features
@@ -154,7 +154,7 @@ require([
                 content += "<span class='bold' title='Site Code'><b>CW Mean C: </b></span>{cwmeanc}<br/>";
             }
             if (feature.graphic.attributes.relnativecover) {
-                content += "<span class='bold' title='Site Code'><b>Relative Native Cover: </b></span>{relnativecover}<br/>";
+                content += "<span class='bold' title='Site Code'><b>Relative Native Cover: </b></span>{relnativecover}%<br/>";
             }
         return content;
     }
@@ -188,12 +188,12 @@ require([
         field: "privacystatus",
         uniqueValueInfos: [
           {
-            value: "public", 
+            value: "Public", 
             symbol: publicSymbol,
             label: "Public (Location Exact)"
           },
           {
-            value: "confidential", 
+            value: "Confidential", 
             symbol: confidentialSymbol,
             label: "Confidential (Location Approximate)"
           }
@@ -254,7 +254,8 @@ require([
         title: "EcoRegional Groups",
         visible: false,
         outFields: ["*"],
-        renderer: renderEco,
+        //renderer: renderEco,
+        opacity: 0.7,
         popupTemplate: {
             title: "Ecoregional Groups",
             content: [
@@ -294,13 +295,13 @@ require([
         outFields: ["*"],
         //outFields: ["watershed", "wetlandtype"],
         popupTemplate: {
-            title: "Wetland Survey Site",
+            title: "<b>Wetland Survey Site</b>",
             actions: [speciesAction, projectAction],
             content: [
 
                     {
                     type: "text",
-                    text: "<b>Project: </b>{project}<br><b>Site Code: </b>{sitecode}<br><b>Survey Date: </b>{surveydate}<br><b>Watershed: </b>{watershed}<br><b>Ecoregional Group: </b>{ecoregionalgroup}<br><b>Primary Wetland Type: </b>{wetlandtype}<br><b>Secondary Wetland Type: </b>{wetlandtype2}<br><b>HGM Class: </b>{projectwetlandclass}<br><b>Vegetation Condition: </b>{vegetationcondition}<br><b>Privacy Status: </b>{privacystatus}<br><b>CW Mean C: </b>{cwmeanc}<br><b>Relatice Native Cover: </b>{relnativecover}<br>"
+                    text: "<b>Project: </b>{project}<br><b>Site Code: </b>{sitecode}<br><b>Survey Date: </b>{surveydate}<br><b>Watershed: </b>{watershed}<br><b>Ecoregional Group: </b>{ecoregionalgroup}<br><b>Primary Wetland Type: </b>{wetlandtype}<br><b>Secondary Wetland Type: </b>{wetlandtype2}<br><b>HGM Class: </b>{projectwetlandclass}<br><b>Vegetation Condition: </b>{vegetationcondition}<br><b>Privacy Status: </b>{privacystatus}<br><b>CW Mean C: </b>{cwmeanc}<br><b>Relative Native Cover: </b>{relnativecover}%<br>"
                 },
                 {
                     type: "attachments"
@@ -319,8 +320,15 @@ require([
         visible: false,
         title: "Land Ownership",
         opacity: 0.5,
+        listMode: "hide-children",
+        sublayers: [
+            {
+                id: 0,
+                visible: true
+            }
+        ],
         popupTemplate: {
-                    title: "Land Ownership",
+                    title: "<b>Land Ownership</b>",
                     content: "{STAE_LGD:contentOwnership}"
                 },
     });
@@ -718,7 +726,7 @@ require([
             });
             grid.on("th.field-meancover:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Mean cover at sites where species was found";
+                evt.target.title = "Mean cover percentage at sites where species was found";
             });
             grid.on("th.field-nativity:mouseover", function(evt) {
                 console.info("hover");
@@ -957,7 +965,7 @@ require([
         domClass.add("mapViewDiv");
         console.log("counting");
             if (sitesCount == 0) {
-                console.log("We have" + sitesCount + "sites");
+                console.log("We have " + sitesCount + " sites");
                 document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " species</b>"
             } else {
                 console.log("sites");
@@ -1463,7 +1471,7 @@ console.log(downloadArray);
 
     function doSpeciesClear() {
         console.log("doSpeciesClear");
-        //sitesCount = 0;
+        sitesCount = 0;
 
         if (grid) {
             dataStore.objectStore.data = {};
@@ -1495,10 +1503,12 @@ console.log(downloadArray);
         speciesQuery.where = "scientificname = '" + speciescommonname + "'";
 
         speciesQueryTask.execute(speciesQuery).then(function(results) {
+            console.log(results);
             var oldArray = results.features;
             specidArray = [];
             oldArray.forEach(function(ftrs) {
 
+                //console.log(ftrs);
                 var att = ftrs.attributes.objectid;
 
                 specidArray.push(att);
@@ -1530,6 +1540,7 @@ console.log(downloadArray);
                         dashArray.push("OR objectid = '" + eck + "' ");
                     })
                 });
+                console.log(dashArray);
 
                 var specDefExp = dashArray.join('');
                 var defExp = specDefExp.substring(3);
@@ -1538,9 +1549,12 @@ console.log(downloadArray);
 
                 plantSites.definitionExpression = defExp;
 
+                console.log(plantSites.definitionExpression);
+
                 plantSites.queryExtent().then(function(response) {
                     console.log(response);
                     mapView.goTo(response.extent);
+                    
                   });
 
 
@@ -1551,6 +1565,12 @@ console.log(downloadArray);
                 query.where = defExp;
                 query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
                 //query.outFields = ["objectid", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
+
+                plantSites.queryFeatureCount().then(function(count) {
+                    console.log(count);
+                    sitesCount = count;
+        
+                });
 
                 plantSites.queryFeatures(query).then(function(e) {
                     console.log(e);
