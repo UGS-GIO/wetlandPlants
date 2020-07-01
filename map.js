@@ -572,6 +572,10 @@ require([
                 console.log(graphics);
                 getResults(results);
 
+                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " sites</b>"
+                document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
+document.getElementById("removeX").setAttribute("style", "float: right;");
+
 
                 // remove existing highlighted features
                 if (highlight) {
@@ -583,6 +587,8 @@ require([
 
             })
             .catch(errorCallback);
+
+
 
     }
 
@@ -956,6 +962,8 @@ require([
         console.log("getResults");
         console.log(response);
         console.log(response.fields);
+        let testField = response.fields[0].name;
+        console.log(testField);
         let graphics = response.features;
         console.log(graphics);
         console.log(sitesCount);
@@ -964,15 +972,22 @@ require([
         gridDis.style.display = 'block';
         domClass.add("mapViewDiv");
         console.log("counting");
-            if (sitesCount == 0) {
-                console.log("We have " + sitesCount + " sites");
-                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " species</b>"
-            } else {
-                console.log("sites");
-                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " sites</b>"
-            }
-            document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
+            if (testField == "projectcode") {
+                document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " project</b>"
+                            document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
             document.getElementById("removeX").setAttribute("style", "float: right;");
+            } 
+
+
+            // if (sitesCount == 0) {
+            //     console.log("We have " + sitesCount + " sites");
+            //     document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " species</b>"
+            // } else {
+            //     console.log("sites");
+            //     document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " sites</b>"
+            // }
+            // document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
+            // document.getElementById("removeX").setAttribute("style", "float: right;");
 
 
 
@@ -1568,8 +1583,12 @@ console.log(downloadArray);
 
                 plantSites.queryFeatureCount().then(function(count) {
                     console.log(count);
-                    sitesCount = count;
-        
+                    //sitesCount = count;
+
+                    //document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + count + " species</b>"
+                    document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + count + " species at " + results.features.length + " sites</b>"
+                    document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
+            document.getElementById("removeX").setAttribute("style", "float: right;");
                 });
 
                 plantSites.queryFeatures(query).then(function(e) {
@@ -1657,6 +1676,9 @@ console.log(downloadArray);
 
 
             });
+
+
+            
         });
 
     }
@@ -1763,7 +1785,7 @@ console.log(downloadArray);
             console.log(count);
             document.getElementById("featureCount").innerHTML =
                 "<b>Showing attributes for " +
-                count + " features </b>"
+                count + " sites </b>"
             document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
             document.getElementById("removeX").setAttribute("style", "float: right;");
 
@@ -2080,12 +2102,13 @@ console.log(downloadArray);
         //add feature count and add x to upper right corner of table to close it
         plantSites.queryFeatureCount().then(function(count) {
             console.log(count);
-            sitesCount = count;
-            // document.getElementById("featureCount").innerHTML =
-            //     "<b>Showing attributes for " +
-            //     count + " features at " + sitesCount + " sites</b>"
-            // document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
-            // document.getElementById("removeX").setAttribute("style", "float: right;");
+          sitesCountforSpecSum = count;
+            //document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " species</b>"
+            document.getElementById("featureCount").innerHTML = 
+                "<b>Showing attributes for " +
+                count + " features at " + sitesCount + " sites</b>"
+            document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
+            document.getElementById("removeX").setAttribute("style", "float: right;");
 
         });
         console.log(plantSites.definitionExpression);
@@ -2129,6 +2152,8 @@ console.log(downloadArray);
             });
 
             console.log(summaryArray);
+
+
 
             
 
@@ -2311,7 +2336,17 @@ counts = count(summaryArray, function (item){
 
             getResults(forObject);
 
-
+                    //add feature count and add x to upper right corner of table to close it
+                    plantSites.queryFeatureCount().then(function(count) {
+                        console.log(count);
+                      sitesCountforSpecSum = count;
+                        //document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + graphics.length.toString() + " species</b>"
+                        document.getElementById("featureCount").innerHTML = 
+                            "<b>Showing attributes for " + uniqueArray.length.toString() + " species at " + count + " sites</b>"
+                        document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
+                        document.getElementById("removeX").setAttribute("style", "float: right;");
+            
+                    });
 
 
         });
@@ -2423,7 +2458,7 @@ counts = count(summaryArray, function (item){
 
 
         querySpecies.executeRelationshipQuery(relationQuerySpecies).then(function(rslts) {
-            //console.log(rslts);
+            console.log(rslts);
 
             var gridfieldArray = [
                 //{alias: 'objectid', name: 'objectid'}, 
@@ -2483,12 +2518,17 @@ counts = count(summaryArray, function (item){
             //     fields.alias = gridFields[i]
             // });
 
-            console.log(poop);
+            console.log(rslts[objectid].features.length);
             getResults(rslts[objectid]);
+            
 
-        });
+        
 
-       
+        document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + rslts[objectid].features.length + " species</b>"
+        document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
+        document.getElementById("removeX").setAttribute("style", "float: right;");
+
+    });
 
     }
 
