@@ -1575,7 +1575,7 @@ console.log(downloadArray);
 
                 var query = plantSites.createQuery();
                 console.log(query);
-                gridFields = ["project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
                 //gridFields = ["objectid", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
                 query.where = defExp;
                 query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
