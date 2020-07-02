@@ -116,45 +116,45 @@ require([
         var content = "";
 
         if (feature.graphic.attributes.project) {
-            content += "<span class='bold' title='Organization'><b>Project: </b></span>{project}<br/>";
+            content += "<span class='bold' title='Project that collected site data'><b>Project: </b></span>{project}<br/>";
         }
             if (feature.graphic.attributes.sitecode) {
-                content += "<span class='bold' title='Site Code'><b>Site Code: </b></span>{sitecode}<br/>";
+                content += "<span class='bold' title='Unique site identifier'><b>Site Code: </b></span>{sitecode}<br/>";
             }
             if (feature.graphic.attributes.surveydate) {
                 console.log(feature.graphic.attributes.surveydate);
                 const date = moment(feature.graphic.attributes.surveydate).format('ll');
-                content += "<span class='bold' title='Survey Date'><b>Survey Date: </b></span>{surveydate}<br/>";
+                content += "<span class='bold' title='Date site was visited'><b>Survey Date: </b></span>{surveydate}<br/>";
             }
             if (feature.graphic.attributes.watershed) {
-                content += "<span class='bold' title='HGM Class'><b>Watershed: </b></span>{watershed}<br/>";
+                content += "<span class='bold' title='Hydrologic unit defined at the HUC8 level'><b>Watershed: </b></span>{watershed}<br/>";
             }
             if (feature.graphic.attributes.ecoregionalgroup) {
-                content += "<span class='bold' title='Ecological System'><b>Ecoregional Group: </b></span>{ecoregionalgroup}<br/>";
+                content += "<span class='bold' title='Modified level III ecoregional group'><b>Ecoregional Group: </b></span>{ecoregionalgroup}<br/>";
             }
             if (feature.graphic.attributes.owner) {
-                content += "<span class='bold' title='Ecological System'><b>Land Owner: </b></span>{owner}<br/>";
+                content += "<span class='bold' title='Entity that owns parcel where site is located, as of early 2020'><b>Land Owner: </b></span>{owner}<br/>";
             }
             if (feature.graphic.attributes.wetlandtype) {
-                content += "<span class='bold' title='Wetland Type'><b>Primary Wetland Type: </b></span>{wetlandtype}<br/>";
+                content += "<span class='bold' title='Primary, or dominant, wetland type as assigned by UGS'><b>Primary Wetland Type: </b></span>{wetlandtype}<br/>";
             }
             if (feature.graphic.attributes.wetlandtype2) {
-                content += "<span class='bold' title='Wetland Type'><b>Secondary Wetland Type: </b></span>{wetlandtype2}<br/>";
+                content += "<span class='bold' title='Secondary wetland type as assigned by UGS for mixed type sites'><b>Secondary Wetland Type: </b></span>{wetlandtype2}<br/>";
             }
             if (feature.graphic.attributes.projectwetlandclass) {
-                content += "<span class='bold' title='Wetland Type'><b>HGM Class: </b></span>{projectwetlandclass}<br/>";
+                content += "<span class='bold' title='Wetland hydrogeomorphic class, for projects where it was assigned'><b>HGM Class: </b></span>{projectwetlandclass}<br/>";
             }
             if (feature.graphic.attributes.vegetationcondition) {
-                content += "<span class='bold' title='Vegetation Condition'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/>";
+                content += "<span class='bold' title='Vegetation condition, as “reference”, “not reference”, or “not enough data.”'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/>";
             }
             if (feature.graphic.attributes.privacystatus) {
-                content += "<span class='bold' title='Condition Method'><b>Privacy Status: </b></span>{privacystatus}<br/>";
+                content += "<span class='bold' title='Privacy status, as “confidential” or “public.”'><b>Privacy Status: </b></span>{privacystatus}<br/>";
             }
             if (feature.graphic.attributes.cwmeanc) {
-                content += "<span class='bold' title='Site Code'><b>CW Mean C: </b></span>{cwmeanc}<br/>";
+                content += "<span class='bold' title='Cover-weighted Mean'><b>CW Mean C: </b></span>{cwmeanc}<br/>";
             }
             if (feature.graphic.attributes.relnativecover) {
-                content += "<span class='bold' title='Site Code'><b>Relative Native Cover: </b></span>{relnativecover}%<br/>";
+                content += "<span class='bold' title='Percent of total cover composed of native species'><b>Relative Native Cover: </b></span>{relnativecover}%<br/>";
             }
         return content;
     }
@@ -301,7 +301,7 @@ require([
 
                     {
                     type: "text",
-                    text: "<b>Project: </b>{project}<br><b>Site Code: </b>{sitecode}<br><b>Survey Date: </b>{surveydate}<br><b>Watershed: </b>{watershed}<br><b>Ecoregional Group: </b>{ecoregionalgroup}<br><b>Primary Wetland Type: </b>{wetlandtype}<br><b>Secondary Wetland Type: </b>{wetlandtype2}<br><b>HGM Class: </b>{projectwetlandclass}<br><b>Vegetation Condition: </b>{vegetationcondition}<br><b>Privacy Status: </b>{privacystatus}<br><b>CW Mean C: </b>{cwmeanc}<br><b>Relative Native Cover: </b>{relnativecover}%<br>"
+                    text: "<span class='bold' title='Project that collected site data'><b>Project: </b></span>{project}<br/><span class='bold' title='Unique site identifier'><b>Site Code: </b></span>{sitecode}<br/><span class='bold' title='Date site was visited'><b>Survey Date: </b></span>{surveydate}<br/><span class='bold' title='Hydrologic unit defined at the HUC8 level'><b>Watershed: </b></span>{watershed}<br/><span class='bold' title='Modified level III ecoregional group'><b>Ecoregional Group: </b></span>{ecoregionalgroup}<br/><span class='bold' title='Entity that owns parcel where site is located, as of early 2020'><b>Land Owner: </b></span>{owner}<br/><span class='bold' title='Primary, or dominant, wetland type as assigned by UGS'><b>Primary Wetland Type: </b></span>{wetlandtype}<br/><span class='bold' title='Secondary wetland type as assigned by UGS for mixed type sites'><b>Secondary Wetland Type: </b></span>{wetlandtype2}<br/><span class='bold' title='Wetland hydrogeomorphic class, for projects where it was assigned'><b>HGM Class: </b></span>{projectwetlandclass}<br/><span class='bold' title='Vegetation condition, as “reference”, “not reference”, or “not enough data.”'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/><span class='bold' title='Privacy status, as “confidential” or “public.”'><b>Privacy Status: </b></span>{privacystatus}<br/><span class='bold' title='Cover-weighted Mean'><b>CW Mean C: </b></span>{cwmeanc}<br/><span class='bold' title='Percent of total cover composed of native species'><b>Relative Native Cover: </b></span>{relnativecover}%<br/>"
                 },
                 {
                     type: "attachments"
