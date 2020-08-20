@@ -1987,9 +1987,14 @@ console.log(downloadArray);
         var valueThree = ecoLevel.options[ecoLevel.selectedIndex].value;
         console.log(valueThree);
 
+        if (valueThree == "All") {
+            var defExp = "";
+        } else { 
+
 
 
         var defExp = "ecoregionalgroup = '" + valueThree + "'";
+        }
         console.log(defExp);
 
         plantSites.definitionExpression = defExp;
@@ -2012,6 +2017,7 @@ console.log(downloadArray);
         // if (!plantSites.visible) {
         //     plantSites.visible = true;
         // }
+    
 
     }
 
@@ -2570,11 +2576,9 @@ counts = count(summaryArray, function (item){
         var conditionQuery = new Query();
 
 
+    sqlQuery = "ecoregionalgroup = '" + type4 + "'";
 
-        sqlQuery = "ecoregionalgroup = '" + type4 + "'";
-
-        console.log(sqlQuery);
-
+console.log(sqlQuery);
 
         weQuery.outFields = ["wetlandtype"];
         weQuery.returnDistinctValues = true;
@@ -2600,7 +2604,7 @@ counts = count(summaryArray, function (item){
         plantSites.queryFeatures(conditionQuery).then(function(ett) {
             addToSelect4(ett);
         })
-
+    
     })
 
     on(conditionSelect, "change", function(evt) {
