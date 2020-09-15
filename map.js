@@ -806,7 +806,7 @@ document.getElementById("removeX").setAttribute("style", "float: right;");
             });
             grid.on("th.field-vegetationcondition:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Vegetation condition, as “reference”, “not reference”, or “not enough data.”";
+                evt.target.title = "Vegetation condition based on threshold of CW Mean C value specific to the wetland type";
             });
             grid.on("th.field-privacystatus:mouseover", function(evt) {
                 console.info("hover");
