@@ -7,6 +7,8 @@ require([
     "esri/layers/ImageryLayer",
     "esri/layers/support/RasterFunction",
     "esri/Basemap",
+    "esri/widgets/BasemapGallery",
+    "esri/widgets/BasemapGallery/support/LocalBasemapsSource",
     "esri/widgets/Sketch/SketchViewModel",
     "esri/Graphic",
     //Layers
@@ -61,7 +63,7 @@ require([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, SketchViewModel, Graphic, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Legend, Expand, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, BasemapGallery, LocalBasemapsSource, SketchViewModel, Graphic, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Legend, Expand, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
 
     //Create the map, view and widgets
 
@@ -112,26 +114,9 @@ require([
         className: "esri-icon-table"
     };
 
-    //custom basemap layer of false color IR
 
 
-     var serviceRFT = new RasterFunction({
-        functionName: "FalseColorComposite",
-        variableName: "Raster"
-      });
 
-      var IRlayer = new ImageryLayer({
-        url: "https://utility.arcgis.com/usrsvcs/servers/0d7e1a9daec346eb9315cba948467b46/rest/services/NAIP/ImageServer",
-        renderingRule: serviceRFT
-      });
-
-      var irBase = new Basemap({
-        baseLayers: [IRlayer],
-        title: "irBase",
-        id: "irBase",
-      });
-
-      console.log(irBase);
 
 
 
@@ -386,6 +371,31 @@ require([
         // renderer: renderSite
     });
 
+     //custom basemap layer of false color IR
+
+
+     var serviceRFT = new RasterFunction({
+        functionName: "FalseColorComposite",
+        variableName: "Raster"
+      });
+
+      var IRlayer = new ImageryLayer({
+        url: "https://utility.arcgis.com/usrsvcs/servers/0d7e1a9daec346eb9315cba948467b46/rest/services/NAIP/ImageServer",
+        renderingRule: serviceRFT
+      });
+
+      var irBase = new Basemap({
+        baseLayers: [IRlayer],
+        title: "False Color Comp from NAIP",
+        id: "irBase",
+        thumbnailUrl: "https://geology.utah.gov/apps/jay/irThumb.PNG"
+      });
+
+      let baseSource = new LocalBasemapsSource({
+          basemaps: [Basemap.fromId("hybrid"), Basemap.fromId("streets"), Basemap.fromId("gray"), irBase]
+      });
+
+
 
     // Map
     var map = new Map({
@@ -438,10 +448,14 @@ require([
     });
     mapView.ui.add(compass, "top-left");
 
-    var basemapToggle = new BasemapToggle({
+    var basemapGallery = new BasemapGallery({
         view: mapView,
-        secondBasemap: "satellite"
-    });
+        container: baseList,
+        source: baseSource
+      });
+
+
+
 
     var scaleBar = new ScaleBar({
         view: mapView,
@@ -458,6 +472,8 @@ require([
     //     //container: "legendDiv",
     //     view: mapView
     // });
+
+
 
     const layerList = new LayerList({
         view: mapView,
