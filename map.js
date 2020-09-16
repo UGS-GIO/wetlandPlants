@@ -4,6 +4,9 @@ require([
     "esri/views/MapView",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/layers/GraphicsLayer",
+    "esri/layers/ImageryLayer",
+    "esri/layers/support/RasterFunction",
+    "esri/Basemap",
     "esri/widgets/Sketch/SketchViewModel",
     "esri/Graphic",
     //Layers
@@ -58,7 +61,7 @@ require([
     "dojo/dom-class",
     "dojo/dom-construct",
     "dojo/domReady!"
-], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, SketchViewModel, Graphic, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Legend, Expand, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
+], function(Map, MapView, SimpleMarkerSymbol, GraphicsLayer, ImageryLayer, RasterFunction, Basemap, SketchViewModel, Graphic, FeatureLayer, MapImageLayer, Query, QueryTask, Home, ScaleBar, Zoom, Compass, Search, Legend, Expand, LayerList, BasemapToggle, watchUtils, RelationshipQuery, AttachmentsContent, Collapse, Dropdown, query, Memory, ObjectStore, ItemFileReadStore, DataGrid, OnDemandGrid, ColumnHider, Selection, StoreAdapter, List, declare, parser, aspect, request, mouse, CalciteMaps, CalciteMapArcGISSupport, on, arrayUtils, dom, domClass, domConstruct) {
 
     //Create the map, view and widgets
 
@@ -93,6 +96,7 @@ require([
 
 
     const gridDis = document.getElementById("gridDisplay");
+    
 
     // Defines an action to open species related to the selected feature
     var speciesAction = {
@@ -108,6 +112,26 @@ require([
         className: "esri-icon-table"
     };
 
+    //custom basemap layer of false color IR
+
+
+     var serviceRFT = new RasterFunction({
+        functionName: "FalseColorComposite",
+        variableName: "Raster"
+      });
+
+      var IRlayer = new ImageryLayer({
+        url: "https://utility.arcgis.com/usrsvcs/servers/0d7e1a9daec346eb9315cba948467b46/rest/services/NAIP/ImageServer",
+        renderingRule: serviceRFT
+      });
+
+      var irBase = new Basemap({
+        baseLayers: [IRlayer],
+        title: "irBase",
+        id: "irBase",
+      });
+
+      console.log(irBase);
 
 
 
@@ -248,6 +272,8 @@ require([
           }
         ]
     };
+
+
 
     let ecoRegions = new FeatureLayer({
         url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV6_View/FeatureServer/2",
@@ -2690,16 +2716,10 @@ console.log(sqlQuery);
 
     // Basemap events
     query("#selectBasemapPanel").on("change", function(e) {
-        if (e.target.value == "ustopo") {
-            // setup the ustopo basemap global variable.
-            var ustopo = new Basemap({
-                baseLayers: new TileLayer({
-                    url: "https://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer"
-                }),
-                title: "usTopographic",
-                id: "ustopo"
-            });
-            mapView.map.basemap = ustopo;
+        console.log("base mapping");
+        if (e.target.value == "Infrared") {
+
+            mapView.map.basemap = irBase;
             // if mapview use basemaps defined in the value-vector=, but if mapview use value=
         } else if (map.mview == "map") {
             mapView.map.basemap = e.target.options[e.target.selectedIndex].dataset.vector;
