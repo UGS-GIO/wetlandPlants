@@ -157,7 +157,7 @@ require([
                 content += "<span class='bold' title='Vegetation condition based on threshold of CW Mean C value specific to the wetland type'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/>";
             }
             if (feature.graphic.attributes.privacystatus) {
-                content += "<span class='bold' title='Privacy status, as “confidential” or “public.”'><b>Privacy Status: </b></span>{privacystatus}<br/>";
+                content += "<span class='bold' title='Privacy status, as “confidential” or “shared.”'><b>Privacy Status: </b></span>{privacystatus}<br/>";
             }
             if (feature.graphic.attributes.cwmeanc) {
                 content += "<span class='bold' title='Cover-weighted Mean'><b>CW Mean C: </b></span>{cwmeanc}<br/>";
@@ -197,7 +197,7 @@ require([
         field: "privacystatus",
         uniqueValueInfos: [
           {
-            value: "Public", 
+            value: "Shared", 
             symbol: publicSymbol,
             label: "Public (Location Exact)"
           },
@@ -312,7 +312,7 @@ require([
 
                     {
                     type: "text",
-                    text: "<span class='bold' title='Project that collected site data'><b>Project: </b></span>{project}<br/><span class='bold' title='Unique site identifier'><b>Site Code: </b></span>{sitecode}<br/><span class='bold' title='Date site was visited'><b>Survey Date: </b></span>{surveydate}<br/><span class='bold' title='Hydrologic unit defined at the HUC8 level'><b>Watershed: </b></span>{watershed}<br/><span class='bold' title='Modified level III ecoregional group'><b>Ecoregional Group: </b></span>{ecoregionalgroup}<br/><span class='bold' title='Entity that owns parcel where site is located, as of early 2020'><b>Land Owner: </b></span>{owner}<br/><span class='bold' title='Primary, or dominant, wetland type as assigned by UGS'><b>Primary Wetland Type: </b></span>{wetlandtype}<br/><span class='bold' title='Secondary wetland type as assigned by UGS for mixed type sites'><b>Secondary Wetland Type: </b></span>{wetlandtype2}<br/><span class='bold' title='Wetland hydrogeomorphic class, for projects where it was assigned'><b>Project Wetland Class: </b></span>{projectwetlandclass}<br/><span class='bold' title='Vegetation condition based on threshold of CW Mean C value specific to the wetland type'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/><span class='bold' title='Privacy status, as “confidential” or “public.”'><b>Privacy Status: </b></span>{privacystatus}<br/><span class='bold' title='Cover-weighted Mean'><b>CW Mean C: </b></span>{cwmeanc}<br/><span class='bold' title='Percent of total cover composed of native species'><b>Relative Native Cover: </b></span>{relnativecover}%<br/>"
+                    text: "<span class='bold' title='Project that collected site data'><b>Project: </b></span>{project}<br/><span class='bold' title='Unique site identifier'><b>Site Code: </b></span>{sitecode}<br/><span class='bold' title='Date site was visited'><b>Survey Date: </b></span>{surveydate}<br/><span class='bold' title='Hydrologic unit defined at the HUC8 level'><b>Watershed: </b></span>{watershed}<br/><span class='bold' title='Modified level III ecoregional group'><b>Ecoregional Group: </b></span>{ecoregionalgroup}<br/><span class='bold' title='Entity that owns parcel where site is located, as of early 2020'><b>Land Owner: </b></span>{owner}<br/><span class='bold' title='Primary, or dominant, wetland type as assigned by UGS'><b>Primary Wetland Type: </b></span>{wetlandtype}<br/><span class='bold' title='Secondary wetland type as assigned by UGS for mixed type sites'><b>Secondary Wetland Type: </b></span>{wetlandtype2}<br/><span class='bold' title='Wetland hydrogeomorphic class, for projects where it was assigned'><b>Project Wetland Class: </b></span>{projectwetlandclass}<br/><span class='bold' title='Vegetation condition based on threshold of CW Mean C value specific to the wetland type'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/><span class='bold' title='Privacy status, as “confidential” or “shared.”'><b>Privacy Status: </b></span>{privacystatus}<br/><span class='bold' title='Cover-weighted Mean'><b>CW Mean C: </b></span>{cwmeanc}<br/><span class='bold' title='Percent of total cover composed of native species'><b>Relative Native Cover: </b></span>{relnativecover}%<br/>"
                 },
                 {
                     type: "attachments"
@@ -852,7 +852,7 @@ document.getElementById("removeX").setAttribute("style", "float: right;");
             });
             grid.on("th.field-privacystatus:mouseover", function(evt) {
                 console.info("hover");
-                evt.target.title = "Privacy status, as “confidential” or “public.”";
+                evt.target.title = "Privacy status, as “confidential” or “shared.”";
             });
             grid.on("th.field-cwmeanc:mouseover", function(evt) {
                 console.info("hover");
@@ -2045,7 +2045,7 @@ console.log(downloadArray);
         plantSites.queryFeatureCount().then(function(count) {
             console.log(count);
             const query = new Query();
-            query.where = defExp + " AND privacystatus = 'public'";
+            query.where = defExp + " AND privacystatus = 'Shared'";
             plantSites.queryFeatureCount(query).then(function(countConf) {
 //**************************PRINTS NUMBER OF SITES FOUND
                 // document.getElementById("featureCount2").innerHTML =
