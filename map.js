@@ -199,7 +199,7 @@ require([
           {
             value: "Shared", 
             symbol: publicSymbol,
-            label: "Public (Location Exact)"
+            label: "Shared (Location Exact)"
           },
           {
             value: "Confidential", 
