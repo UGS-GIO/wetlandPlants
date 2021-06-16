@@ -150,8 +150,8 @@ require([
             if (feature.graphic.attributes.wetlandtype2) {
                 content += "<span class='bold' title='Secondary wetland type as assigned by UGS for mixed type sites'><b>Secondary Wetland Type: </b></span>{wetlandtype2}<br/>";
             }
-            if (feature.graphic.attributes.projectwetlandclass) {
-                content += "<span class='bold' title='Wetland hydrogeomorphic class, for projects where it was assigned'><b>Project Wetland Class: </b></span>{projectwetlandclass}<br/>";
+            if (feature.graphic.attributes.hgm_class) {
+                content += "<span class='bold' title='Wetland hydrogeomorphic class, for projects where it was assigned'><b>HGM Class: </b></span>{hgm_class}<br/>";
             }
             if (feature.graphic.attributes.vegetationcondition) {
                 content += "<span class='bold' title='Vegetation condition based on threshold of CW Mean C value specific to the wetland type'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/>";
@@ -312,7 +312,7 @@ require([
 
                     {
                     type: "text",
-                    text: "<span class='bold' title='Project that collected site data'><b>Project: </b></span>{project}<br/><span class='bold' title='Unique site identifier'><b>Site Code: </b></span>{sitecode}<br/><span class='bold' title='Date site was visited'><b>Survey Date: </b></span>{surveydate}<br/><span class='bold' title='Hydrologic unit defined at the HUC8 level'><b>Watershed: </b></span>{watershed}<br/><span class='bold' title='Modified level III ecoregional group'><b>Ecoregional Group: </b></span>{ecoregionalgroup}<br/><span class='bold' title='Entity that owns parcel where site is located, as of early 2020'><b>Land Owner: </b></span>{owner}<br/><span class='bold' title='Primary, or dominant, wetland type as assigned by UGS'><b>Primary Wetland Type: </b></span>{wetlandtype}<br/><span class='bold' title='Secondary wetland type as assigned by UGS for mixed type sites'><b>Secondary Wetland Type: </b></span>{wetlandtype2}<br/><span class='bold' title='Wetland hydrogeomorphic class, for projects where it was assigned'><b>Project Wetland Class: </b></span>{projectwetlandclass}<br/><span class='bold' title='Vegetation condition based on threshold of CW Mean C value specific to the wetland type'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/><span class='bold' title='Privacy status, as “confidential” or “shared.”'><b>Privacy Status: </b></span>{privacystatus}<br/><span class='bold' title='Cover-weighted Mean'><b>CW Mean C: </b></span>{cwmeanc}<br/><span class='bold' title='Percent of total cover composed of native species'><b>Relative Native Cover: </b></span>{relnativecover}%<br/>"
+                    text: "<span class='bold' title='Project that collected site data'><b>Project: </b></span>{project}<br/><span class='bold' title='Unique site identifier'><b>Site Code: </b></span>{sitecode}<br/><span class='bold' title='Date site was visited'><b>Survey Date: </b></span>{surveydate}<br/><span class='bold' title='Hydrologic unit defined at the HUC8 level'><b>Watershed: </b></span>{watershed}<br/><span class='bold' title='Modified level III ecoregional group'><b>Ecoregional Group: </b></span>{ecoregionalgroup}<br/><span class='bold' title='Entity that owns parcel where site is located, as of early 2020'><b>Land Owner: </b></span>{owner}<br/><span class='bold' title='Primary, or dominant, wetland type as assigned by UGS'><b>Primary Wetland Type: </b></span>{wetlandtype}<br/><span class='bold' title='Secondary wetland type as assigned by UGS for mixed type sites'><b>Secondary Wetland Type: </b></span>{wetlandtype2}<br/><span class='bold' title='Wetland hydrogeomorphic class, for projects where it was assigned'><b>HGM Class: </b></span>{hgm_class}<br/><span class='bold' title='Vegetation condition based on threshold of CW Mean C value specific to the wetland type'><b>Vegetation Condition: </b></span>{vegetationcondition}<br/><span class='bold' title='Privacy status, as “confidential” or “shared.”'><b>Privacy Status: </b></span>{privacystatus}<br/><span class='bold' title='Cover-weighted Mean'><b>CW Mean C: </b></span>{cwmeanc}<br/><span class='bold' title='Percent of total cover composed of native species'><b>Relative Native Cover: </b></span>{relnativecover}%<br/>"
                 },
                 {
                     type: "attachments"
@@ -536,14 +536,14 @@ require([
         var query = {
             geometry: geometry,
             outFields: ["*"]
-            //outFields: ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "projectwetlandclass", "vegetationcondition", "privacystatus", "meanc", "relnativecover"]
+            //outFields: ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "hgm_class", "vegetationcondition", "privacystatus", "meanc", "relnativecover"]
         };
 
         // query graphics from the csv layer view. Geometry set for the query
         // can be polygon for point features and only intersecting geometries are returned
         plantLayerView.queryFeatures(query)
             .then(function(results) {
-                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
                 theGridFields = [
  
                     {
@@ -579,8 +579,8 @@ require([
                         name: 'wetlandtype2'
                     },
                     {
-                        alias: 'Project Wetland Class',
-                        name: 'projectwetlandclass'
+                        alias: 'HGM Class',
+                        name: 'hgm_class'
                     },
                     {
                         alias: 'Vegetation Condition',
@@ -838,7 +838,7 @@ document.getElementById("removeX").setAttribute("style", "float: right;");
                 console.info("hover");
                 evt.target.title = "Date site was visited";
             });
-            grid.on("th.field-projectwetlandclass:mouseover", function(evt) {
+            grid.on("th.field-hgm_class:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Wetland hydrogeomorphic class, for projects where it was assigned";
             });
@@ -874,7 +874,7 @@ document.getElementById("removeX").setAttribute("style", "float: right;");
                 console.info("hover");
                 evt.target.title = "Secondary wetland type as assigned by UGS for mixed type sites";
             });
-            grid.on("th.field-projectwetlandclass:mouseover", function(evt) {
+            grid.on("th.field-hgm_class:mouseover", function(evt) {
                 console.info("hover");
                 evt.target.title = "Wetland hydrogeomorphic class, for projects where it was assigned";
             });
@@ -1625,10 +1625,10 @@ console.log(downloadArray);
 
                 var query = plantSites.createQuery();
                 console.log(query);
-                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
                 //gridFields = ["objectid", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
                 query.where = defExp;
-                query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+                query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
                 //query.outFields = ["objectid", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
 
                 //plantSites.queryFeatureCount().then(function(count) {
@@ -1694,8 +1694,8 @@ console.log(downloadArray);
                             name: 'wetlandtype2'
                         },
                         {
-                            alias: 'Project Wetland Class',
-                            name: 'projectwetlandclass'
+                            alias: 'HGM Class',
+                            name: 'hgm_class'
                         },
                         {
                             alias: 'Vegetation Condition',
@@ -1738,7 +1738,7 @@ console.log(downloadArray);
         console.log("doQuery");
         doGridClear();
 
-        gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+        gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
 
 
 
@@ -1841,7 +1841,7 @@ console.log(downloadArray);
         });
 
         var query = plantSites.createQuery();
-        query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "projectwetlandclass", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+        query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
         console.log("poop");
         plantSites.queryFeatures(query).then(function(e) {
             console.log(e);
@@ -1895,8 +1895,8 @@ console.log(downloadArray);
                     name: 'wetlandtype2'
                 },
                 {
-                    alias: 'Project Wetland Class',
-                    name: 'projectwetlandclass'
+                    alias: 'HGM Class',
+                    name: 'hgm_class'
                 },
                 {
                     alias: 'Vegetation Condition',
