@@ -80,7 +80,7 @@ require([
     // will be used to display attributes of selected features
     let dataStore = new StoreAdapter({
         objectStore: new Memory({
-            idProperty: "objectid"
+            idProperty: "OBJECTID"
         })
     });
 
@@ -88,7 +88,7 @@ require([
     //     "hgmClass", "wetlandtype", "vegetationcondition", "coverMethod", "surveydate"
     // ];
 
-    let speciesFields = ["objectid", "family", "scientificname", "commonname", "cover",
+    let speciesFields = ["OBJECTID", "family", "scientificname", "commonname", "cover",
         "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"
     ];
 
@@ -261,7 +261,7 @@ require([
 
 
     let ecoRegions = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV6_View/FeatureServer/2",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV7_View/FeatureServer/2",
         title: "EcoRegional Groups",
         visible: false,
         outFields: ["*"],
@@ -300,7 +300,7 @@ require([
     });
 
     var plantSites = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV6_View/FeatureServer/0",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV7_View/FeatureServer/0",
         title: "Wetland Survey Sites",
         visible: true,
         outFields: ["*"],
@@ -354,7 +354,7 @@ require([
 
 
     var sitesSpeciesJoin = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV6_View/FeatureServer/5",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/ArcGIS/rest/services/plantPortalV7_View/FeatureServer/5",
         //url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/sitesSpeciesJoinV5/FeatureServer",
         
         // title: "Plant Sites",
@@ -536,14 +536,14 @@ require([
         var query = {
             geometry: geometry,
             outFields: ["*"]
-            //outFields: ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "hgm_class", "vegetationcondition", "privacystatus", "meanc", "relnativecover"]
+            //outFields: ["OBJECTID", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "wetlandtype", "hgm_class", "vegetationcondition", "privacystatus", "meanc", "relnativecover"]
         };
 
         // query graphics from the csv layer view. Geometry set for the query
         // can be polygon for point features and only intersecting geometries are returned
         plantLayerView.queryFeatures(query)
             .then(function(results) {
-                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+                gridFields = ["OBJECTID", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
                 theGridFields = [
  
                     {
@@ -722,7 +722,7 @@ document.getElementById("removeX").setAttribute("style", "float: right;");
                     renderCell: testRenderCell
                 }
             } else if
-             (field.name == "objectid") {
+             (field.name == "OBJECTID") {
                 console.log("HIDE COLUMN " + field.name);
                 return {
                     field: field.name,
@@ -890,12 +890,12 @@ document.getElementById("removeX").setAttribute("style", "float: right;");
         mapView.graphics.removeAll();
         var row = event.rows[0]
         console.log(row);
-        var id = row.data.objectid;
+        var id = row.data.OBJECTID;
         console.log(id);
 
         var query = plantSites.createQuery();
 
-        query.where = "objectid = '" + id + "'";
+        query.where = "OBJECTID = '" + id + "'";
         query.returnGeometry = true;
         query.outFields = ["*"],
 
@@ -957,7 +957,7 @@ document.getElementById("removeX").setAttribute("style", "float: right;");
 
 
     var hucLayer = new FeatureLayer({
-        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/1",
+        url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV7_View/FeatureServer/1",
         title: "Watershed (HUC8) Boundaries",
         visible: true,
         popupTemplate: {
@@ -1111,9 +1111,9 @@ console.log("go on and create grid");
             console.log(args);
 
             var downloadArray = args.data;
-            //delete objectid from the download array
+            //delete OBJECTID from the download array
             downloadArray.forEach(function(keytv){
-                delete keytv.objectid;
+                delete keytv.OBJECTID;
             })
 
 console.log(downloadArray);
@@ -1189,7 +1189,7 @@ console.log(downloadArray);
             return plantSites.when(function() {
                 var typeQuery = new Query();
                 typeQuery.where = "1=1";
-                typeQuery.outFields = ["objectid"];
+                typeQuery.outFields = ["OBJECTID"];
                 //typeQuery.returnDistinctValues = true;
                 //typeQuery.orderByFields = ["wetlandtype"];
                 return plantSites.queryFeatures(typeQuery);
@@ -1211,12 +1211,12 @@ console.log(downloadArray);
         var oldArray = values["features"];
         oldArray.forEach(function(ftrs) {
 
-            var att = ftrs.attributes.objectid;
+            var att = ftrs.attributes.OBJECTID;
 
             idArray.push(att);
         });
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV7_View/FeatureServer/0"
         });
 
         var speciesRelateQuery = new RelationshipQuery({
@@ -1296,7 +1296,7 @@ console.log(downloadArray);
         
 
         var queryEco = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV7_View/FeatureServer/0"
         });
 
 
@@ -1554,7 +1554,7 @@ console.log(downloadArray);
         console.log(speciescommonname);
 
         var speciesQueryTask = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/3",
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV7_View/FeatureServer/3",
         });
 
         //Query the related table for names that match commonname field with the user selected option in the DOM
@@ -1568,13 +1568,13 @@ console.log(downloadArray);
             specidArray = [];
             oldArray.forEach(function(ftrs) {
 
-                //console.log(ftrs);
-                var att = ftrs.attributes.objectid;
+                console.log(ftrs);
+                var att = ftrs.attributes.OBJECTID;
 
                 specidArray.push(att);
             });
 
-            //setup the relationship query with the plantSites featurelayer using the objectids from the related table query
+            //setup the relationship query with the plantSites featurelayer using the OBJECTIDs from the related table query
             var querySites = new RelationshipQuery({
                 objectIds: specidArray,
                 outFields: ["*"],
@@ -1596,8 +1596,8 @@ console.log(downloadArray);
                 getArray.forEach(function(et) {
 
                     et.forEach(function(ef) {
-                        var eck = ef.attributes.objectid;
-                        dashArray.push("OR objectid = '" + eck + "' ");
+                        var eck = ef.attributes.OBJECTID;
+                        dashArray.push("OR OBJECTID = '" + eck + "' ");
                     })
                 });
                 console.log(dashArray);
@@ -1625,11 +1625,11 @@ console.log(downloadArray);
 
                 var query = plantSites.createQuery();
                 console.log(query);
-                gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
-                //gridFields = ["objectid", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
+                gridFields = ["OBJECTID", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+                //gridFields = ["OBJECTID", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
                 query.where = defExp;
-                query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
-                //query.outFields = ["objectid", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
+                query.outFields = ["OBJECTID", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+                //query.outFields = ["OBJECTID", "surveyeventid", "family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "wetlandindicator", "cvalue"];
 
                 //plantSites.queryFeatureCount().then(function(count) {
                     //console.log(count);
@@ -1660,7 +1660,7 @@ console.log(downloadArray);
                     
                     // testing
                     var fieldArray = [
-                        //{alias: 'objectid', name: 'objectid'}, 
+                        //{alias: 'OBJECTID', name: 'OBJECTID'}, 
                         {
                             alias: 'Project',
                             name: 'project'
@@ -1738,7 +1738,7 @@ console.log(downloadArray);
         console.log("doQuery");
         doGridClear();
 
-        gridFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+        gridFields = ["OBJECTID", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
 
 
 
@@ -1841,7 +1841,7 @@ console.log(downloadArray);
         });
 
         var query = plantSites.createQuery();
-        query.outFields = ["objectid", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
+        query.outFields = ["OBJECTID", "project", "sitecode", "surveydate", "watershed", "ecoregionalgroup", "owner", "wetlandtype", "wetlandtype2", "hgm_class", "vegetationcondition", "privacystatus", "cwmeanc", "relnativecover"];
         console.log("poop");
         plantSites.queryFeatures(query).then(function(e) {
             console.log(e);
@@ -1861,7 +1861,7 @@ console.log(downloadArray);
             });
 
             var fieldArray = [
-                //{alias: 'objectid', name: 'objectid'}, 
+                //{alias: 'OBJECTID', name: 'OBJECTID'}, 
                 {
                     alias: 'Project',
                     name: 'project'
@@ -2321,7 +2321,7 @@ counts = count(summaryArray, function (item){
             console.log(noCoverArray)
 
             var fieldArray = [
-                //{alias: 'objectid', name: 'objectid'}, 
+                //{alias: 'OBJECTID', name: 'OBJECTID'}, 
                 {
                     alias: 'Family',
                     name: 'family'
@@ -2421,23 +2421,23 @@ counts = count(summaryArray, function (item){
         ];
 
         var queryProjects = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV7_View/FeatureServer/0"
         });
 
         relationQueryProjects = new RelationshipQuery({
-            objectIds: [objectid],
+            objectIds: [OBJECTID],
             outFields: ["projectcode", "organization", "contactinfo", "projectgoal", "methodname", "assessmentareadescription",
             "vegetationmethod", "vegetationcalculation", "reportlink"],
             relationshipId: 1
         });
 
         queryProjects.executeRelationshipQuery(relationQueryProjects).then(function(rslts) {
-            //console.log(rslts);
+            console.log(rslts);
 
-            var poop = rslts[objectid];
+            var poop = rslts[OBJECTID];
 
             var gridFieldArray = [
-                //{alias: 'objectid', name: 'objectid'}, 
+                //{alias: 'OBJECTID', name: 'OBJECTID'}, 
                 {
                     alias: 'Project Code',
                     name: 'projectcode'
@@ -2484,7 +2484,7 @@ counts = count(summaryArray, function (item){
             // });
 
             console.log(poop);
-            getResults(rslts[objectid]);
+            getResults(rslts[OBJECTID]);
 
         });
 
@@ -2502,11 +2502,11 @@ counts = count(summaryArray, function (item){
         gridFields = ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "duration", "indicatorwmvc", "indicatoraridwest", "cvalue"];
 
         var querySpecies = new QueryTask({
-            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV6_View/FeatureServer/0"
+            url: "https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/plantPortalV7_View/FeatureServer/0"
         });
 
         relationQuerySpecies = new RelationshipQuery({
-            objectIds: [objectid],
+            objectIds: [OBJECTID],
             outFields: ["family", "scientificname", "commonname", "cover", "nativity", "noxious", "growthform", "duration", "indicatorwmvc", "indicatoraridwest", "cvalue"],
             relationshipId: 0
         });
@@ -2516,7 +2516,7 @@ counts = count(summaryArray, function (item){
             console.log(rslts);
 
             var gridfieldArray = [
-                //{alias: 'objectid', name: 'objectid'}, 
+                //{alias: 'OBJECTID', name: 'OBJECTID'}, 
                 {
                     alias: 'Family',
                     name: 'family'
@@ -2564,7 +2564,7 @@ counts = count(summaryArray, function (item){
                 },
             ];
 
-            var poop = rslts[objectid];
+            var poop = rslts[OBJECTID];
 
             poop.fields = gridfieldArray;
 
@@ -2573,13 +2573,13 @@ counts = count(summaryArray, function (item){
             //     fields.alias = gridFields[i]
             // });
 
-            console.log(rslts[objectid].features.length);
-            getResults(rslts[objectid]);
+            console.log(rslts[OBJECTID].features.length);
+            getResults(rslts[OBJECTID]);
             
 
         
 
-        document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + rslts[objectid].features.length + " species</b>"
+        document.getElementById("featureCount").innerHTML = "<b>Showing attributes for " + rslts[OBJECTID].features.length + " species</b>"
         document.getElementById("removeX").setAttribute("class", "glyphicon glyphicon-remove");
         document.getElementById("removeX").setAttribute("style", "float: right;");
 
@@ -2674,8 +2674,8 @@ console.log(sqlQuery);
     // species dgrid function
     watchUtils.when(mapView.popup, "selectedFeature", function species(evt) {
 
-        objectid = mapView.popup.selectedFeature.attributes.objectid;
-        console.log(objectid);
+        OBJECTID = mapView.popup.selectedFeature.attributes.OBJECTID;
+        console.log(OBJECTID);
 
     }); // end watchUtil
 
@@ -2685,8 +2685,8 @@ console.log(sqlQuery);
         if (event.action.id === "related-species") {
             console.log("species action clicked");
             singleSiteSpeciesID = "";
-            console.log(event.target.features[0].attributes.objectid);
-            singleSiteSpeciesID = event.target.features[0].attributes.objectid;
+            console.log(event.target.features[0].attributes.OBJECTID);
+            singleSiteSpeciesID = event.target.features[0].attributes.OBJECTID;
             doQuerySpecies();
         }
     });
@@ -2695,8 +2695,8 @@ console.log(sqlQuery);
         if (event.action.id === "related-projects") {
             console.log("project action clicked");
             singleSiteSpeciesID = "";
-            console.log(event.target.features[0].attributes.objectid);
-            singleSiteSpeciesID = event.target.features[0].attributes.objectid;
+            console.log(event.target.features[0].attributes.OBJECTID);
+            singleSiteSpeciesID = event.target.features[0].attributes.OBJECTID;
             doQueryProjects();
         }
     });
