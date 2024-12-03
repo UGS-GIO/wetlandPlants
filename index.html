@@ -246,6 +246,30 @@ a:active {
 
 <body class="calcite-maps calcite-nav-top">
 
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyAK4G_yHpBmEwsLmmPhwNL4PuJRTWa6KxE",
+      authDomain: "ut-dnr-ugs-wetlandplants-prod.firebaseapp.com",
+      projectId: "ut-dnr-ugs-wetlandplants-prod",
+      storageBucket: "ut-dnr-ugs-wetlandplants-prod.firebasestorage.app",
+      messagingSenderId: "700605793434",
+      appId: "1:700605793434:web:58bfeb9cdeed6b1eb04b23",
+      measurementId: "G-M3NTXZRZW6"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M7CNXDK"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
