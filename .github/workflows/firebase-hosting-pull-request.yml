@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Set Firebase config
+        run: |
+          echo "FIREBASE_SERVICE_ACCOUNT=FIREBASE_SERVICE_ACCOUNT_UT_DNR_UGS_WETLANDPLANTS_DEV" >> $GITHUB_ENV
+          echo "PROJECT_ID=ut-dnr-ugs-wetlandplants-dev" >> $GITHUB_ENV
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
