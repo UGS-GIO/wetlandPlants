@@ -2721,12 +2721,20 @@ console.log(sqlQuery);
 
     var aClickedConLink = document.getElementById("conditionClassLink");
 
-    aClickedConLink.onclick = function(){
-
+    aClickedConLink.onclick = function(e){
+        e.preventDefault();
+        
+        // Show Glossary panel
         document.getElementById("panelGlossary").className = "panel collapse in";
         document.getElementById("collapseGlossary").className = "panel-collapse collapse in";
+        
+        // Hide Info panel
         document.getElementById("panelInfo").className = "panel collapse";
         document.getElementById("collapseInfo").className = "panel-collapse collapse";
+        
+        // Scroll to vegetation condition section
+        document.getElementById("vegetation-condition").scrollIntoView();
+        
         return false;
     }
 
